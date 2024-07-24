@@ -5,10 +5,10 @@ COPY . .
 ARG TARGETOS
 ARG TARGETARCH
 RUN GOOS=$TARGETOS GOARCH=$TARGETARCH CGO_ENABLED=0 go build -o xray -trimpath -ldflags "-s -w -buildid=" ./main
-ADD https://github.com/v2fly/geoip/releases/latest/download/geoip.dat /v2fly/geoip.dat
-ADD https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat /v2fly/geosite.dat
-ADD https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat /loyalsoldier/geoip.dat
-ADD https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat /loyalsoldier/geosite.dat
+ADD https://github.com/v2fly/geoip/releases/latest/download/geoip.dat /V2Fly/geoip.dat
+ADD https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat /V2Fly/geosite.dat
+ADD https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat /Loyalsoldier/geoip.dat
+ADD https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat /Loyalsoldier/geosite.dat
 
 # chainguard/static contains only tzdata and ca-certificates, can be built with multiarch static binaries.
 FROM --platform=linux/amd64 chainguard/static:latest
@@ -24,5 +24,6 @@ ENV TZ=$TZ
 ENTRYPOINT [ "/usr/bin/xray" ]
 CMD [ "-config", "/etc/xray/config.json" ]
 
-ARG flavor=v2fly
+ARG flavor=V2Fly
 COPY --from=build /$flavor /usr/share/xray
+LABEL org.opencontainers.image.description Xray-core with $flavor geoip and geosite
