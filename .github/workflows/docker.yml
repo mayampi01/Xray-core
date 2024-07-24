@@ -32,7 +32,7 @@ jobs:
           images: ghcr.io/${{ github.repository_owner }}/xray-core
           flavor: |
             latest=auto
-            suffix=loyalsoldier,onlatest=true
+            suffix=-loyalsoldier,onlatest=true
           tags: |
             type=sha
             type=ref,event=branch
@@ -69,6 +69,7 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          annotations: ${{ steps.meta.outputs.annotations }}
       - name: Build and push Loyalsoldier flavor
         uses: docker/build-push-action@v6
         with:
@@ -93,3 +94,4 @@ jobs:
           push: true
           tags: ${{ steps.loyalsoldier.outputs.tags }}
           labels: ${{ steps.loyalsoldier.outputs.labels }}
+          annotations: ${{ steps.loyalsoldier.outputs.annotations }}
