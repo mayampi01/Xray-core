@@ -38,6 +38,19 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
+      - name: Docker metadata L (short for Loyalsoldier) flavor
+        id: l
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/xray-core
+          flavor: |
+            latest=auto
+            suffix=-l,onlatest=true
+          tags: |
+            type=sha
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -68,7 +81,6 @@ jobs:
           file: .github/docker/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
       - name: Build and push Loyalsoldier flavor
         uses: docker/build-push-action@v6
         with:
@@ -91,5 +103,6 @@ jobs:
           file: .github/docker/Dockerfile
           build-args: flavor=loyalsoldier
           push: true
-          tags: ${{ steps.loyalsoldier.outputs.tags }}
-          labels: ${{ steps.loyalsoldier.outputs.labels }}
+          tags: |
+            ${{ steps.loyalsoldier.outputs.tags }}
+            ${{ steps.l.outputs.tags }}
