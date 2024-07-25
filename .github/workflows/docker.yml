@@ -33,18 +33,6 @@ jobs:
           flavor: |
             latest=auto
             suffix=-loyalsoldier,onlatest=true
-          tags: |
-            type=sha
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-      - name: Docker metadata L (short for Loyalsoldier) flavor
-        id: l
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository_owner }}/xray-core
-          flavor: |
-            latest=auto
             suffix=-l,onlatest=true
           tags: |
             type=sha
@@ -105,4 +93,3 @@ jobs:
           push: true
           tags: |
             ${{ steps.loyalsoldier.outputs.tags }}
-            ${{ steps.l.outputs.tags }}
